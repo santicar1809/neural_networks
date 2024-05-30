@@ -67,7 +67,7 @@ def create_model(input_shape):
 def train_model(model, train_data, test_data, batch_size=None, epochs=20,
                 steps_per_epoch=None, validation_steps=None):
 
-
+    %%time
     if steps_per_epoch is None:
         steps_per_epoch = len(train_data)
     if validation_steps is None:
@@ -139,23 +139,21 @@ def load_test(path):
 
 
 def create_model(input_shape):
-    
-    """
-    Define el modelo
-    """
+
     backbone=ResNet50(input_shape=input_shape,weights='imagenet',include_top=False)
     model=Sequential()
     model.add(backbone)
     model.add(GlobalAveragePooling2D())
     model.add(Dense(units=1,activation='relu'))
-    model.compile(loss='mse',activation='adam',metrics=['mae'])
+    optimizer=Adam(lr=0.0005)
+    model.compile(loss='mse',optimizer=optimizer,metrics=['mae'])
 
     return model
 
 
 def train_model(model, train_data, test_data, batch_size=None, epochs=20,
                 steps_per_epoch=None, validation_steps=None):
-
+    get_ipython().run_line_magic('%time', '')
     """
     Entrena el modelo dados los parámetros
     """
