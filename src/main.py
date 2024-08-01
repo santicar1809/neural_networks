@@ -14,6 +14,4 @@ def main():
     preprocessed_data = preprocess_data(data) #Preprocessing stage
     eda_report(data,preprocessed_data[0],preprocessed_data[1]) # Analysis stage
     string()
-
-
 main()

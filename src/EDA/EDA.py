@@ -11,30 +11,32 @@ def eda_report(data,features,target):
     
     describe_result=data.describe()
     
-    eda_path = './files/modeling_output/figures/'
+    eda_path = './files/datasets/modeling_output/figures/'
 
     if not os.path.exists(eda_path):
         os.makedirs(eda_path)
 
     # Exporting the file
-    with open(eda_path+'describe.txt', 'w') as f:
+    with open('./files/datasets/modeling_output/reports/describe.txt', 'w') as f:
         f.write(describe_result.to_string())
 
     # Exporting general info
-    with open(eda_path+'info.txt','w') as f:
+    with open('./files/datasets/modeling_output/reports/info.txt','w') as f:
         sys.stdout = f
         data.info()
         sys.stdout = sys.__stdout__
-        
-    data['real_age'].plot(kind='hist')
-    plt.title('Distribución de la edad')
-    plt.show()
-    plt.savefig(eda_path+'fig1.png')
     
-    data['real_age'].plot(kind='box')
-    plt.title('Distribución de la edad')
+    fig1,ax1=plt.subplots()    
+    ax1.hist(data['real_age'])
+    ax1.set_title('Distribución de la edad')
     plt.show()
-    plt.savefig(eda_path+'fig2.png')
+    fig1.savefig(eda_path+'fig1.png')
+    
+    fig2,ax2=plt.subplots()
+    ax2.boxplot(data['real_age'])
+    ax2.set_title('Distribución de la edad')
+    plt.show()
+    fig2.savefig(eda_path+'fig2.png')
     
     # muestra 16 imágenes
     fig = plt.figure(figsize=(10,10))
@@ -48,4 +50,4 @@ def eda_report(data,features,target):
     
     print(target[:15])
     target_1=pd.Series(target[:15])
-    target_1.to_csv(eda_path+'target.txt', sep='\t', index=False)
+    target_1.to_csv('./files/datasets/modeling_output/reports/target.txt', sep='\t', index=False)
